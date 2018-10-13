@@ -1,0 +1,8 @@
+name = "AnalyticBSplines"
+uuid = "a80a5e3c-cedb-11e8-0a40-877266eed49d"
+authors = ["Stefanos Carlström <stefanos.carlstrom@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
