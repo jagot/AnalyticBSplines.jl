@@ -47,4 +47,6 @@ function derop(Bₖ, t, o)
     O
 end
 
+export gen_basis, scalar_op, derop
+
 end # module
