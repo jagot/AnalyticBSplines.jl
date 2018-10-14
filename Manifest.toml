@@ -1,6 +1,6 @@
 [[BSplines]]
 deps = ["BandedMatrices", "FastGaussQuadrature", "LinearAlgebra", "RecipesBase", "SparseArrays", "Test"]
-git-tree-sha1 = "2f155f8ac2a315afd3edc2b40f3c1df5ea61db10"
+git-tree-sha1 = "ed88ecdf4d6a365893648cd1aefe8b9f8efd4448"
 repo-rev = "master"
 repo-url = "https://github.com/jagot/BSplines.jl.git"
 uuid = "8759ff0c-cd99-11e8-1c1c-d94a817e6fcc"
