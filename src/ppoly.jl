@@ -103,8 +103,17 @@ function polyder(pp::PPoly, k=1)
     PPoly(pis)
 end
 
-polyint(pp::PPoly, k=0) =
-    PPoly([i=>polyint(p,k)
-           for (i,p) in pp.pis])
+polyint(pp::PPoly) = PPoly([i=>polyint(p) for (i,p) in pp.pis])
 
-export PPoly
+function polyint(pp::PPoly{T}, a::Number, b::Number) where T
+    ab = Interval(a, b)
+    S = 0
+    for (i,p) ∈ pp.pis
+        if !(isempty(i ∩ ab))
+            S += polyint(p, max(i.a,a), min(i.b,b))
+        end
+    end
+    S
+end
+
+export PPoly, polyder, polyint
