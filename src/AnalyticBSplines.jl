@@ -20,4 +20,18 @@ function gen_basis(t::AbstractKnotSet{T}) where T
     B
 end
 
+function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
+    B = Bₖ[end]
+    n = order(t)+1
+    O = Matrix{T}(undef, n,n)
+    l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
+    l(v) = v
+    for i = 1:n
+        for j = 1:n
+            O[i,j] = polyint(B[i]*f*B[j], l(first(t)),l(last(t)))
+        end
+    end
+    O
+end
+
 end # module
