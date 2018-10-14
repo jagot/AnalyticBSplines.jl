@@ -22,61 +22,80 @@ analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSpli
   #+END_SRC
 
   #+RESULTS:
+  : LinearKnotSet{Rational{Int64}} of order k=3 on [0//1,2//1] (4 intervals)
 
   We then generate the basis
-  #+BEGIN_SRC julia :exports code
+  #+BEGIN_SRC julia :exports code :results verbatim
     B = AnalyticBSplines.gen_basis(t)
-  #+END_SRC
-
-  #+RESULTS:
-  : nothing
-
-  #+BEGIN_SRC julia :exports results :results verbatim output
-    println(B[end])
+    B[end]
   #+END_SRC
 
   #+RESULTS:
   #+begin_example
-  PPoly{Rational{Int64}}[Piecewise polynomial{Rational{Int64}}
-   Poly(1//1 - 4//1*x + 4//1*x^2) on Interval[0//1,1//2], Piecewise polynomial{Rational{Int64}}
+  6-element Array{PPoly{Rational{Int64}},1}:
+   Piecewise polynomial{Rational{Int64}}
+   Poly(1//1 - 4//1*x + 4//1*x^2) on Interval[0//1,1//2]                                                                                                                 
+   Piecewise polynomial{Rational{Int64}}
    Poly(4//1*x - 6//1*x^2) on Interval[0//1,1//2]
-   Poly(2//1 - 4//1*x + 2//1*x^2) on Interval[1//2,1//1], Piecewise polynomial{Rational{Int64}}
+   Poly(2//1 - 4//1*x + 2//1*x^2) on Interval[1//2,1//1]                                                                 
+   Piecewise polynomial{Rational{Int64}}
    Poly(2//1*x^2) on Interval[0//1,1//2]
    Poly(-3//2 + 6//1*x - 4//1*x^2) on Interval[1//2,1//1]
-   Poly(9//2 - 6//1*x + 2//1*x^2) on Interval[1//1,3//2], Piecewise polynomial{Rational{Int64}}
+   Poly(9//2 - 6//1*x + 2//1*x^2) on Interval[1//1,3//2]                  
+   Piecewise polynomial{Rational{Int64}}
    Poly(1//2 - 2//1*x + 2//1*x^2) on Interval[1//2,1//1]
    Poly(-11//2 + 10//1*x - 4//1*x^2) on Interval[1//1,3//2]
-   Poly(8//1 - 8//1*x + 2//1*x^2) on Interval[3//2,2//1], Piecewise polynomial{Rational{Int64}}
+   Poly(8//1 - 8//1*x + 2//1*x^2) on Interval[3//2,2//1]
+   Piecewise polynomial{Rational{Int64}}
    Poly(2//1 - 4//1*x + 2//1*x^2) on Interval[1//1,3//2]
-   Poly(-16//1 + 20//1*x - 6//1*x^2) on Interval[3//2,2//1], Piecewise polynomial{Rational{Int64}}
-   Poly(9//1 - 12//1*x + 4//1*x^2) on Interval[3//2,2//1]]
+   Poly(-16//1 + 20//1*x - 6//1*x^2) on Interval[3//2,2//1]                                                       
+   Piecewise polynomial{Rational{Int64}}
+   Poly(9//1 - 12//1*x + 4//1*x^2) on Interval[3//2,2//1]                                                                                                                
   #+end_example
 
   We can then easily generate the overlap matrix (or any other
   polynomial scalar operator):
 
-  #+BEGIN_SRC julia :exports code
-    I = scalar_op(B, t)
-  #+END_SRC
-
-  #+BEGIN_SRC julia :exports output :results output verbatim
-    println(I)
+  #+BEGIN_SRC julia :exports both :results verbatim
+    scalar_op(B, t)
   #+END_SRC
 
   #+RESULTS:
-  : Rational{Int64}[1//10 7//120 1//120 0//1; 7//120 1//6 5//48 1//240; 1//120 5//48 11//40 13//120; 0//1 1//240 13//120 11//40]
+  : 4×4 Array{Rational{Int64},2}:
+  :  1//10   7//120   1//120   0//1  
+  :  7//120  1//6     5//48    1//240
+  :  1//120  5//48   11//40   13//120
+  :  0//1    1//240  13//120  11//40 
 
-
-  #+BEGIN_SRC julia :exports code
-    D₁ = derop(B, t, 1)
-    D₂ = derop(B, t, 2)
-  #+END_SRC
-
-  #+BEGIN_SRC julia :exports output :results output verbatim
-    println(D₁)
-    println(D₂)
+  #+BEGIN_SRC julia :exports both :results verbatim
+    derop(B, t, 1)
   #+END_SRC
 
   #+RESULTS:
-  : Any[-1//2 5//12 1//12 0; -5//12 0//1 3//8 1//24; -1//12 -3//8 0//1 5//12; 0 -1//24 -5//12 0//1]
-  : Any[4//3 -2//1 2//3 0; 2//1 -8//3 1//3 1//3; 2//3 1//3 -2//1 2//3; 0 1//3 2//3 -2//1]
+  : 4×4 Array{Any,2}:
+  :  -1//2    5//12   1//12   0   
+  :  -5//12   0//1    3//8   1//24
+  :  -1//12  -3//8    0//1   5//12
+  :    0     -1//24  -5//12  0//1 
+
+  #+BEGIN_SRC julia :exports both :results verbatim
+    derop(B, t, 2)
+  #+END_SRC
+
+  #+RESULTS:
+  : 4×4 Array{Any,2}:
+  :  4//3  -2//1   2//3    0  
+  :  2//1  -8//3   1//3   1//3
+  :  2//3   1//3  -2//1   2//3
+  :   0     1//3   2//3  -2//1
+
+  #+BEGIN_SRC julia :exports both :results verbatim
+    derop(B, t, 3)
+  #+END_SRC
+
+  #+RESULTS:
+  : 4×4 Array{Any,2}:
+  :  0  0  0  0
+  :  0  0  0  0
+  :  0  0  0  0
+  :  0  0  0  0
