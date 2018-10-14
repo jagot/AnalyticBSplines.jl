@@ -34,4 +34,17 @@ function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
     O
 end
 
+function derop(Bₖ, t, o)
+    n = order(t)+1
+    O = Matrix{Any}(undef, n,n)
+    l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
+    l(v) = v
+    for i = 1:n
+        for j = 1:n
+            O[i,j] = polyint(Bₖ[end][i]*polyder(Bₖ[end][j],o), l(first(t)),l(last(t)))
+        end
+    end
+    O
+end
+
 end # module
