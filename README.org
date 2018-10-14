@@ -25,7 +25,7 @@ analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSpli
   : LinearKnotSet{Rational{Int64}} of order k=3 on [0//1,2//1] (4 intervals)
 
   We then generate the basis
-  #+BEGIN_SRC julia :exports code :results verbatim
+  #+BEGIN_SRC julia :exports both :results verbatim
     B = AnalyticBSplines.gen_basis(t)
     B[end]
   #+END_SRC
@@ -52,6 +52,8 @@ analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSpli
    Piecewise polynomial{Rational{Int64}}
    Poly(9//1 - 12//1*x + 4//1*x^2) on Interval[3//2,2//1]                                                                                                                
   #+end_example
+
+  [[file:figures/basis.svg]]
 
   We can then easily generate the overlap matrix (or any other
   polynomial scalar operator):
