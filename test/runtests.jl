@@ -93,13 +93,30 @@ end
 
 @testset "BSplines" begin
     @testset "Basis functions" begin
-        t = LinearKnotSet(3, 0:1//2:1)
+        k = 3
+        t = LinearKnotSet(k, 0:1//2:1)
         B = gen_basis(t)
+        @test length(B) == k
+        @test length(B[end]) == length(t) - k
         @test B[1][3:4] == [PPoly([(0,1//2)=>[1]]),
                             PPoly([(1//2,1)=>[1]])]
         @test B[2][2:4] == [PPoly([(0,1//2)=>[1,-2]]),
                             PPoly([(0,1//2)=>[0,2],
                                    (1//2,1)=>[2,-2]]),
                             PPoly([(1//2,1)=>[-1,2]])]
+    end
+
+    @testset "Operators" begin
+        k = 7
+        t = LinearKnotSet(k, 0:1//2:6)
+
+        B = gen_basis(t)
+        @test length(B[end]) == length(t) - k
+
+        Dᵏ⁻¹ = derop(B, t, k-1)
+        Dᵏ   = derop(B, t, k)
+
+        @test !all(Dᵏ⁻¹ .== 0)
+        @test  all(Dᵏ   .== 0)
     end
 end

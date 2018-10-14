@@ -22,7 +22,7 @@ end
 
 function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
     B = Bₖ[end]
-    n = order(t)+1
+    n = length(B)
     O = Matrix{T}(undef, n,n)
     l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
     l(v) = v
@@ -35,7 +35,7 @@ function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
 end
 
 function derop(Bₖ, t, o)
-    n = order(t)+1
+    n = length(Bₖ[end])
     O = Matrix{Any}(undef, n,n)
     l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
     l(v) = v
