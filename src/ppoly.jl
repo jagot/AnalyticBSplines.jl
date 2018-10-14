@@ -11,6 +11,7 @@ struct PPoly{T}
             end
         end
         sort!(pis, by = ip -> ip[1].a)
+        filter!(ip -> !isempty(ip[1]) && ip[2] != zero(T), pis)
         new{T}(pis)
     end
 end
@@ -90,7 +91,6 @@ function +(p₁::PPoly{T}, p₂::PPoly{T}) where T
             push!(pis, i′ => p′)
         end
     end
-    filter!(ip -> !isempty(ip[1]) && ip[2] != zero(T), pis)
     PPoly(pis)
 end
 
@@ -132,19 +132,12 @@ function *(p₁::PPoly{T}, p₂::PPoly{T}) where T
             push!(pis, ii′ => p*p′)
         end
     end
-    filter!(ip -> !isempty(ip[1]) && ip[2] != zero(T), pis)
     PPoly(pis)
 end
 
 # /(pp::PPoly, p′::Poly) = PPoly([i=>p/p′ for (i,p) in pp.pis])
 
-function polyder(pp::PPoly, k=1)
-    pis = [i => polyder(p,k)
-           for (i,p) in pp.pis]
-    filter!(ip -> ip[2]!=0, pis)
-    PPoly(pis)
-end
-
+polyder(pp::PPoly, k=1) = PPoly([i => polyder(p,k) for (i,p) in pp.pis])
 polyint(pp::PPoly) = PPoly([i=>polyint(p) for (i,p) in pp.pis])
 
 function polyint(pp::PPoly{T}, a::Number, b::Number) where T
