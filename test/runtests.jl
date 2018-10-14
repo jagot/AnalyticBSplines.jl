@@ -1,7 +1,8 @@
 using AnalyticBSplines
 using Test
 
-import AnalyticBSplines: collapse!
+import AnalyticBSplines: collapse!, gen_basis
+using BSplines
 
 @testset "Intervals" begin
     @testset "Subsets" begin
@@ -70,5 +71,18 @@ end
             (3,4) => [8,2,7],
             (4,5) => [0,2]
         ])
+    end
+end
+
+@testset "BSplines" begin
+    @testset "Basis functions" begin
+        t = LinearKnotSet(3, 0:1//2:1)
+        B = gen_basis(t)
+        @test B[1][3:4] == [PPoly([(0,1//2)=>[1]]),
+                            PPoly([(1//2,1)=>[1]])]
+        @test B[2][2:4] == [PPoly([(0,1//2)=>[1,-2]]),
+                            PPoly([(0,1//2)=>[0,2],
+                                   (1//2,1)=>[2,-2]]),
+                            PPoly([(1//2,1)=>[-1,2]])]
     end
 end
