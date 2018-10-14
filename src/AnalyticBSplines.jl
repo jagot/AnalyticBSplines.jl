@@ -2,7 +2,7 @@ module AnalyticBSplines
 
 using Polynomials
 using BSplines
-import BSplines: AbstractKnotSet
+import BSplines: AbstractKnotSet, derop
 
 include("intervals.jl")
 include("ppoly.jl")
