@@ -94,6 +94,37 @@ end
 
 *(pp::PPoly, p′::Poly) = PPoly([i=>p*p′ for (i,p) in pp.pis])
 *(p′::Poly,pp::PPoly) = pp*p′
+
+function *(p₁::PPoly{T}, p₂::PPoly{T}) where T
+    pis = Vector{Pair{Interval{T},Poly{T}}}()
+    intersections = Matrix{Bool}(undef, length(p₁.pis), length(p₂.pis))
+    isub = Vector{Vector{Interval{T}}}()
+    i′sub = Vector{Vector{Interval{T}}}()
+    for (k,(i,p)) ∈ enumerate(p₁.pis)
+        push!(isub, [i])
+        for (l,(i′,p′)) ∈ enumerate(p₂.pis)
+            ii′ = i ∩ i′
+            intersections[k,l] = !isempty(ii′)
+        end
+    end
+    for (i′,p′) ∈ p₂.pis
+        push!(i′sub, [i′])
+    end
+
+    irows = reduce(|, intersections, dims=2)
+    icols = reduce(|, intersections, dims=1)
+    for (k,(i,p)) ∈ zip(eachindex(irows), p₁.pis)
+        !irows[k] && continue
+        for (l,(i′,p′)) ∈ zip(eachindex(icols), p₂.pis)
+            !icols[l] && continue
+            ii′ = i ∩ i′
+            push!(pis, ii′ => p*p′)
+        end
+    end
+    filter!(ip -> !isempty(ip[1]) && ip[2] != zero(T), pis)
+    PPoly(pis)
+end
+
 # /(pp::PPoly, p′::Poly) = PPoly([i=>p/p′ for (i,p) in pp.pis])
 
 function polyder(pp::PPoly, k=1)
