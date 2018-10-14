@@ -40,6 +40,17 @@ function show(io::IO, pp::PPoly{T}) where T
     end
 end
 
+# Evaluation
+function (pp::PPoly)(x::Number)
+    S = 0
+    for (i,p) ∈ pp.pis
+        if x ∈ i
+            S += polyval(p, x)
+        end
+    end
+    S
+end
+
 # Arithmetic
 function +(p₁::PPoly{T}, p₂::PPoly{T}) where T
     pis = Vector{Pair{Interval{T},Poly{T}}}()

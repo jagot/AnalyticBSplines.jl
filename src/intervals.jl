@@ -4,7 +4,7 @@ struct Interval{T}
 end
 Interval(a::T,b::U) where {T,U} = Interval(promote(a,b)...)
 
-import Base: ∪, ∩, ⊆, \, union, isempty, show, isless
+import Base: ∪, ∩, \, ⊆, ∈, isempty, show, isless
 
 isless(i₁::Interval,i₂::Interval) = i₁.a < i₂.a
 adjacent(i₁::Interval,i₂::Interval) = i₁.b == i₂.a
@@ -12,6 +12,9 @@ isempty(i::Interval) = i.a >= i.b
 
 ⊂(i₁::Interval,i₂::Interval) = i₂.a < i₁.a && i₁.b < i₂.b
 ⊆(i₁::Interval,i₂::Interval) = i₂.a <= i₁.a && i₁.b <= i₂.b
+
+# This imposes right-continuity, as de Boor uses.
+∈(e::Number, i::Interval) = i.a < e && e ≤ i.b
 
 function ∩(i₁::Interval,i₂::Interval)
     a = max(i₁.a,i₂.a)
