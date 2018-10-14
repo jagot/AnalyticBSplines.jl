@@ -3,6 +3,8 @@ using Test
 
 import AnalyticBSplines: collapse!, gen_basis
 using BSplines
+using LinearAlgebra
+isantisymmetric(A::AbstractMatrix) = all(A+A' .== zero(eltype(A)))
 
 @testset "Intervals" begin
     @testset "Subsets" begin
@@ -108,7 +110,7 @@ end
 
     @testset "Operators" begin
         k = 7
-        t = LinearKnotSet(k, 0:1//2:6)
+        t = LinearKnotSet(k, BigInt(0):1//2:6)
 
         B = gen_basis(t)
         @test length(B[end]) == length(t) - k
@@ -118,5 +120,9 @@ end
 
         @test !all(Dᵏ⁻¹ .== 0)
         @test  all(Dᵏ   .== 0)
+
+        B′ = gen_basis(t, 0, 0)
+        @test isantisymmetric(derop(B′, t, 1))
+        @test issymmetric(derop(B′, t, 2))
     end
 end

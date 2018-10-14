@@ -7,7 +7,7 @@ import BSplines: AbstractKnotSet, derop
 include("intervals.jl")
 include("ppoly.jl")
 
-function gen_basis(t::AbstractKnotSet{T}) where T
+function gen_basis(t::AbstractKnotSet{T}, bl=one(T), br=one(T)) where T
     d(a,b) = b == 0 ? 0 : a/b
     B = [[PPoly([((t[j],t[j+1]) => [one(T)])])
           for j = 1:length(t)-1]]
@@ -17,6 +17,8 @@ function gen_basis(t::AbstractKnotSet{T}) where T
               for i = 1:length(t)-k]
         push!(B,Bₖ)
     end
+    B[end][1] *= bl
+    B[end][end] *= br
     B
 end
 
@@ -34,9 +36,9 @@ function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
     O
 end
 
-function derop(Bₖ, t, o)
+function derop(Bₖ, t::AbstractKnotSet{T}, o::Integer) where T
     n = length(Bₖ[end])
-    O = Matrix{Any}(undef, n,n)
+    O = Matrix{T}(undef, n,n)
     l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
     l(v) = v
     for i = 1:n

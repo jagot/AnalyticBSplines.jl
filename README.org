@@ -26,7 +26,7 @@ analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSpli
 
   We then generate the basis
   #+BEGIN_SRC julia :exports both :results verbatim
-    B = AnalyticBSplines.gen_basis(t)
+    B = gen_basis(t)
     B[end]
   #+END_SRC
 
@@ -104,7 +104,22 @@ analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSpli
   #+END_SRC
   where =[a,b]= are the end-points. These boundary conditions can be
   satisfied by e.g. removing the first and last BSpline (this amounts
-  to Dirichlet0 conditions).
+  to Dirichlet0 conditions). We can accomplish this thusly:
+  #+BEGIN_SRC julia :exports both :results verbatim
+    B′ = gen_basis(t, 0, 0)
+    derop(B′, t, 2)
+  #+END_SRC
+
+  #+RESULTS:
+  : 6×6 Array{Any,2}:
+  :  0    0      0      0      0    0
+  :  0  -8//3   1//3   1//3    0    0
+  :  0   1//3  -2//1   2//3   1//3  0
+  :  0   1//3   2//3  -2//1   1//3  0
+  :  0    0     1//3   1//3  -8//3  0
+  :  0    0      0      0      0    0
+
+  Finally, the k:th derivative operator of a basis of order k, is zero:
 
   #+BEGIN_SRC julia :exports both :results verbatim
     derop(B, t, 3)
