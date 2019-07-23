@@ -9,14 +9,14 @@
 #+PROPERTY: header-args:julia :session *julia-AnalyticBSplines*
 
 Simple library for defining and evaluating B-splines
-analytically. Companion package to [[https://github.com/jagot/BSplines.jl][BSplines.jl]].
+analytically. Companion package to [[https://github.com/jagot/BSplinesQuasi.jl][BSplinesQuasi.jl]].
 
 * Usage
   We first define a knot set (using rationals such that polynomial
   integrals/derivatives will be exact).
   #+BEGIN_SRC julia :exports both :results verbatim
     using AnalyticBSplines
-    using BSplines # For knot-sets
+    using BSplinesQuasi # For knot-sets
 
     t = LinearKnotSet(3, 0:1//2:2)
   #+END_SRC

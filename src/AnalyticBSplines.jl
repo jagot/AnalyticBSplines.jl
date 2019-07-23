@@ -1,13 +1,13 @@
 module AnalyticBSplines
 
 using Polynomials
-using BSplines
-import BSplines: AbstractKnotSet, derop
+using BSplinesQuasi
+import BSplinesQuasi: AbstractKnotSet
 
 include("intervals.jl")
 include("ppoly.jl")
 
-function gen_basis(t::AbstractKnotSet{T}, bl=one(T), br=one(T)) where T
+function gen_basis(t::AbstractKnotSet{k,ml,mr,T}, bl=one(T), br=one(T)) where {k,ml,mr,T}
     d(a,b) = b == 0 ? 0 : a/b
     B = [[PPoly([((t[j],t[j+1]) => [one(T)])])
           for j = 1:length(t)-1]]
@@ -22,7 +22,7 @@ function gen_basis(t::AbstractKnotSet{T}, bl=one(T), br=one(T)) where T
     B
 end
 
-function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
+function scalar_op(Bₖ, t::AbstractKnotSet{k,ml,mr,T}, f::Poly=Poly([one(T)])) where {k,ml,mr,T}
     B = Bₖ[end]
     n = length(B)
     O = Matrix{T}(undef, n,n)
@@ -36,7 +36,7 @@ function scalar_op(Bₖ, t::AbstractKnotSet{T}, f::Poly=Poly([one(T)])) where T
     O
 end
 
-function derop(Bₖ, t::AbstractKnotSet{T}, o::Integer) where T
+function derop(Bₖ, t::AbstractKnotSet{k,ml,mr,T}, o::Integer) where {k,ml,mr,T}
     n = length(Bₖ[end])
     O = Matrix{T}(undef, n,n)
     l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v

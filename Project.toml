@@ -4,7 +4,8 @@ authors = ["Stefanos Carlström <stefanos.carlstrom@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-BSplines = "8759ff0c-cd99-11e8-1c1c-d94a817e6fcc"
+BSplinesQuasi = "678624be-a580-11e9-0652-37e296f5ff63"
+ContinuumArrays = "abb603bd-c6a4-5c0b-b5d0-50a836a7e82c"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

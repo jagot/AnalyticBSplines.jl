@@ -2,7 +2,7 @@ using AnalyticBSplines
 using Test
 
 import AnalyticBSplines: collapse!, gen_basis
-using BSplines
+using BSplinesQuasi
 using LinearAlgebra
 isantisymmetric(A::AbstractMatrix) = all(A+A' .== zero(eltype(A)))
 
@@ -96,7 +96,7 @@ end
 @testset "BSplines" begin
     @testset "Basis functions" begin
         k = 3
-        t = LinearKnotSet(k, 0:1//2:1)
+        t = LinearKnotSet(k, 0//1, 1//1, 2)
         B = gen_basis(t)
         @test length(B) == k
         @test length(B[end]) == length(t) - k
@@ -110,7 +110,7 @@ end
 
     @testset "Operators" begin
         k = 7
-        t = LinearKnotSet(k, BigInt(0):1//2:6)
+        t = LinearKnotSet(k, BigInt(0)//1, BigInt(6)//1, 12)
 
         B = gen_basis(t)
         @test length(B[end]) == length(t) - k
