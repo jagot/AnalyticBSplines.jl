@@ -36,18 +36,23 @@ function scalar_op(Bₖ, t::AbstractKnotSet{k,ml,mr,T}, f::Poly=Poly([one(T)])) 
     O
 end
 
-function derop(Bₖ, t::AbstractKnotSet{k,ml,mr,T}, o::Integer) where {k,ml,mr,T}
-    n = length(Bₖ[end])
-    O = Matrix{T}(undef, n,n)
+function derop(L, R, t::AbstractKnotSet{k,ml,mr,T}, o::Integer) where {k,ml,mr,T}
+    m = length(L[end])
+    n = length(R[end])
+    O = Matrix{T}(undef, m,n)
     l(v::Rational) = denominator(v) == 1 ? numerator(v) : 1.0*v
     l(v) = v
-    for i = 1:n
+    d,r = divrem(o,2)
+    a,b = d,d+r
+    for i = 1:m
         for j = 1:n
-            O[i,j] = polyint(Bₖ[end][i]*polyder(Bₖ[end][j],o), l(first(t)),l(last(t)))
+            O[i,j] = (iseven(a) ? 1 : -1)*polyint(polyder(L[end][i],a)*polyder(R[end][j],b), l(first(t)),l(last(t)))
         end
     end
     O
 end
+
+derop(B, t, o) = derop(B, B, t, o)
 
 export gen_basis, scalar_op, derop
 
